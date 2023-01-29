@@ -3,6 +3,7 @@ import { json } from "stream/consumers";
 
 function App() {
   const [WordToGuess, setWordToGuess] = useState("shalomi");
+  const [cnt, setcnt] = useState<number>(0);
   let me: any;
 
   useEffect(() => {
@@ -13,11 +14,24 @@ function App() {
         setWordToGuess(JSON.stringify(data));
       })
       .catch(error => {
-        console.log("hhhh errrorrr", error);
+        console.log("errrorrr", error);
       });
   }, []);
 
-  return <h1>{WordToGuess}</h1>;
+  function submitHandler() {
+    setcnt(prev => prev + 1);
+  }
+
+  return (
+    <div>
+      <form onSubmit={submitHandler}>
+        <input type={"text"} />
+        <input type={"submit"} />
+      </form>
+      <h1>{cnt}</h1>
+      <h1>{WordToGuess}</h1>
+    </div>
+  );
 }
 
 export default App;

@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import express, { Express, Request, Response } from "express";
 import path from "path";
 import cors from "cors";
+import data from "./server-data/data";
 
 dotenv.config();
 
@@ -11,7 +12,9 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/", (req: Request, res: Response) => {
-  res.json({ a: "another coffe!" });
+  let index = Math.floor(Math.random() * data.length);
+  console.log("inddex-->", index);
+  res.json({ chosenword: data[index] });
 });
 
 const port = process.env.PORT || 3001;
