@@ -17,8 +17,14 @@ app.get("/", (req: Request, res: Response) => {
   res.json({ chosenword: data[index] });
 });
 
-const port = process.env.PORT || 3001;
+app.post("/checkword",(req,res)=>{
+  
+})
 
+
+
+
+const port = process.env.PORT || 3001;
 app.listen(port, () => {
   console.log(`imm fucking on air !! ${port}`);
 });

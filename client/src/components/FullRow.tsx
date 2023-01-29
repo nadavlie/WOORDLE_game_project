@@ -14,11 +14,13 @@ const Input_styled: any = styled.input`
 `;
 const Container = styled.div`
   display: flex;
+  gap: 6px;
+  margin-bottom: 5px;
 `;
 const FullRow: React.FC = () => {
   return (
     <Container>
-      <Input_styled />
+      <Input_styled value={"gu"} />
       <Input_styled />
       <Input_styled />
       <Input_styled />
@@ -28,3 +30,20 @@ const FullRow: React.FC = () => {
 };
 
 export default FullRow;
+
+// import styled from "styled-components";
+
+// interface Props {
+//   isActive: boolean;
+// }
+
+// const StyledButton = styled.button<Props>`
+//   background-color: ${({ isActive }) => (isActive ? "green" : "red")};
+//   color: white;
+//   padding: 10px 20px;
+//   border-radius: 5px;
+// `;
+
+// const Button = ({ isActive }: Props) => {
+//   return <StyledButton isActive={isActive}>Click me</StyledButton>;
+// };

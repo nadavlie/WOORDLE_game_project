@@ -27,6 +27,11 @@ function App() {
   return (
     <div>
       <FullRow />
+      <FullRow />
+      <FullRow />
+      <FullRow />
+      <FullRow />
+
       <h1>{cnt}</h1>
       <h1>{WordToGuess}</h1>
     </div>
