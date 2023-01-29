@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import { json } from "stream/consumers";
+import FullRow from "./components/FullRow";
 
 function App() {
-  const [WordToGuess, setWordToGuess] = useState("shalomi");
+  const [WordToGuess, setWordToGuess] = useState("");
   const [cnt, setcnt] = useState<number>(0);
-  let me: any;
+  //const [state, dispath] = useReducer();
 
   useEffect(() => {
     fetch("http://localhost:3001/")
@@ -14,6 +15,7 @@ function App() {
         setWordToGuess(JSON.stringify(data));
       })
       .catch(error => {
+        setWordToGuess("world");
         console.log("errrorrr", error);
       });
   }, []);
@@ -24,10 +26,7 @@ function App() {
 
   return (
     <div>
-      <form onSubmit={submitHandler}>
-        <input type={"text"} />
-        <input type={"submit"} />
-      </form>
+      <FullRow />
       <h1>{cnt}</h1>
       <h1>{WordToGuess}</h1>
     </div>
