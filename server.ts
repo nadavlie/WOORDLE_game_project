@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/", (req: Request, res: Response) => {
-  res.json({ a: "im happy now! cigi!" });
+  res.json({ a: "another coffe!" });
 });
 
 const port = process.env.PORT || 3001;
