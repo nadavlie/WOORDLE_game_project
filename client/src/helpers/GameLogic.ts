@@ -1,27 +1,42 @@
-import * as Type from "./Types"
-import axios from "axios"
+import * as Type from "./Types";
+import axios from "axios";
+const QWERTY = `QWERTYUIOPASDFGHJKLZXCVBNM`.split("").concat(["del"]);
 
 // const reducer=(prev:Type.State,action:Type.Action):any{
 
-
-const reducer=(prev:Type.State,action:Type.Action):Type.State{
-  if (action.type==="add"){
-    return {...prev,guess:prev.guess+action.letter}
+const reducer = (prev: Type.State, action: Type.Action): Type.State => {
+  if (action.type === "add") {
+    return { ...prev, guess: prev.guess + action.letter };
   }
-  if(action.type==="check"){
 
-    let answer=async () => {
-
-      await axios.post("http://localhost:3001/checkword",{wordToCheck:prev.guess+action.letter}).then(answer=>console.log(answer)).catch(err=>console.log("sshit fuck shit fuck",err))
-
-      
-    } 
-
-    
-
+  if (action.type === "delete") {
+    if (prev.guess.length > 0 && prev.guess.length < 5) {
+      return { ...prev, guess: prev.guess.slice(0, -1) };
+    }
+    return prev;
   }
+  if (action.type === "check") {
+    (async () => {
+      let answer = await axios
+        .post("http://localhost:3001/checkword", {
+          wordToCheck: prev.guess + action.letter,
+        })
+        .then(cheked => alert(cheked))
+        .catch(err => {
+          console.error("my bad!", err);
+        });
+      console.log("emeergennccy!", answer);
+      return prev;
+    })();
+    return prev;
+  }
+  return prev;
+};
+export default reducer;
+
+export function isValidLetter(letter: string): boolean {
+  return QWERTY.includes(letter.toUpperCase());
 }
-
 
 // const response = axios({
 //   method: 'get',
@@ -30,17 +45,6 @@ const reducer=(prev:Type.State,action:Type.Action):Type.State{
 // });
 
 // console.log(response.data);
-
-
-
-
-
-
-
-
-
-
-
 
 // const reducer = (state: State, action: SETSTATE) => {
 //   if (action.type === "AddLetter") {

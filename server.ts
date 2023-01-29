@@ -17,12 +17,10 @@ app.get("/", (req: Request, res: Response) => {
   res.json({ chosenword: data[index] });
 });
 
-app.post("/checkword",(req,res)=>{
-  
-})
-
-
-
+app.post("/checkword", (req: Request, res: Response) => {
+  let word = req.body.wordToCheck;
+  console.log("sent word:", word);
+});
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {

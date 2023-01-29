@@ -1,5 +1,5 @@
 import styled from "styled-components";
-const Input_styled: any = styled.input`
+const InputStyled: any = styled.input`
   display: inline-block;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
     rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
@@ -20,11 +20,11 @@ const Container = styled.div`
 const FullRow: React.FC = () => {
   return (
     <Container>
-      <Input_styled value={"gu"} />
-      <Input_styled />
-      <Input_styled />
-      <Input_styled />
-      <Input_styled />
+      <InputStyled />
+      <InputStyled />
+      <InputStyled />
+      <InputStyled />
+      <InputStyled />
     </Container>
   );
 };

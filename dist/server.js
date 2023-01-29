@@ -16,6 +16,10 @@ app.get("/", (req, res) => {
     console.log("inddex-->", index);
     res.json({ chosenword: data_1.default[index] });
 });
+app.post("/checkword", (req, res) => {
+    let word = req.body.wordToCheck;
+    console.log("sent word:", word);
+});
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
     console.log(`imm fucking on air !! ${port}`);

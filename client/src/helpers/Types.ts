@@ -4,6 +4,6 @@ export interface State {
 }
 
 export interface Action {
-  type: "check" | "add";
+  type: "check" | "add" | "delete";
   letter: string;
 }
