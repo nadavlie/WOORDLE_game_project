@@ -19,6 +19,7 @@ app.get("/", (req: Request, res: Response) => {
 
 app.post("/", (req: Request, res: Response) => {
   console.log("back to you....!");
+  console.log("req.body-->", req.body);
   //sending to check users guess
   const results = CheckWord(GameWord, req.body.wordToCheck);
   res.json(results);

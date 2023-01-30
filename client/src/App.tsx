@@ -1,14 +1,18 @@
-import React, { useEffect, useRef, useReducer } from "react";
-
+import axios from "axios";
+import React, { useEffect, useRef, useReducer, useState } from "react";
 import FullRow from "./components/FullRow";
 import reducer from "./helpers/GameLogic";
 import { isValidLetter } from "./helpers/GameLogic";
 
 function App() {
-  const [state, dispach] = useReducer(reducer, { current: 0, guess: "" });
+  const [state, dispach] = useReducer(reducer, {
+    current: 0,
+    guess: "",
+    toCheck: false,
+  });
   const _WorD = useRef("");
 
-  //getting a game word from server
+  //getting a game word from server a first app mount!
   useEffect(() => {
     fetch("http://localhost:3001/")
       .then(response => response.json())
@@ -20,30 +24,45 @@ function App() {
         _WorD.current = "world";
       });
   }, []);
+  //getting a game word from server a first app mount!
 
   //KEY-PRESS HANDLER
   function KeyDownHandler(event: KeyboardEvent): void {
-    if (
-      !isValidLetter(event.key) &&
-      event.key !== "Backspace" &&
-      event.key !== "Escape"
-    ) {
-      alert("invalid letter typed mt friend!");
-      return;
-    }
     switch (event.key) {
       case "Backspace":
-        dispach({ type: "delete", letter: event.key });
+        dispach({ type: "delete" });
         return;
       case "Escape":
         console.log("deal later with escape--->", event.key);
         return;
       default:
-        state.guess.length < 4
-          ? dispach({ type: "add", letter: event.key })
-          : dispach({ type: "check", letter: event.key });
+        if (!isValidLetter(event.key)) {
+          alert("invalid letter typed mt friend!");
+          return;
+        } else if (state.guess.length < 4) {
+          dispach({ type: "add", letter: event.key });
+          return;
+        }
     }
+    //if we got here -->  it means needs to check the word!
+    dispach({ letter: event.key, type: "addAndCheck" });
   }
+  useEffect(() => {
+    const callServer = async () => {
+      let answer = await axios.post("http://localhost:3001/", {
+        wordToCheck: state.guess,
+      });
+      if (answer.status == 200) {
+        dispach({ dataFromServer: answer.data, type: "answer-success" });
+        return;
+      }
+      dispach({ dataFromServer: answer.data, type: "answer-fail" });
+    };
+    if (state.toCheck) {
+      callServer();
+    }
+  });
+
   //kEYBOARDlISTENER!
   useEffect(() => {
     window.addEventListener("keydown", KeyDownHandler);
