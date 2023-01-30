@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { toDisplayProp } from "../helpers/Types";
 const InputStyled: any = styled.input`
   display: inline-block;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
@@ -17,33 +18,23 @@ const Container = styled.div`
   gap: 6px;
   margin-bottom: 5px;
 `;
-const FullRow: React.FC = () => {
-  return (
-    <Container>
-      <InputStyled />
-      <InputStyled />
-      <InputStyled />
-      <InputStyled />
-      <InputStyled />
-    </Container>
-  );
+
+//props==>"gad" OR {world:[gray,yellow,green.green.yellow]}
+
+const FullRow: React.FC<toDisplayProp> = ({ toDisplay }): JSX.Element => {
+  if (typeof toDisplay === "string") {
+    return (
+      <Container>
+        <InputStyled defaultValue={} />
+        <InputStyled defaultValue={} />
+        <InputStyled defaultValue={} />
+        <InputStyled defaultValue={} />
+        <InputStyled defaultValue={} />
+      </Container>
+    );
+  } else {
+    //map the styles accordingly!
+  }
 };
 
 export default FullRow;
-
-// import styled from "styled-components";
-
-// interface Props {
-//   isActive: boolean;
-// }
-
-// const StyledButton = styled.button<Props>`
-//   background-color: ${({ isActive }) => (isActive ? "green" : "red")};
-//   color: white;
-//   padding: 10px 20px;
-//   border-radius: 5px;
-// `;
-
-// const Button = ({ isActive }: Props) => {
-//   return <StyledButton isActive={isActive}>Click me</StyledButton>;
-// };

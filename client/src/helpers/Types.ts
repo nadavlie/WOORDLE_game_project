@@ -1,11 +1,27 @@
 export interface State {
-  current: 0 | 1 | 2 | 3 | 4;
   guess: string;
+  styles: Style[];
   toCheck: boolean;
+  try?: number;
+}
+
+export interface Style {
+  [key: string]: string[];
 }
 
 export interface Action {
-  type: "add" | "delete" | "addAndCheck" | "answer-success" | "answer-fail";
+  type:
+    | "add"
+    | "delete"
+    | "addAndCheck"
+    | "response:invalid-word"
+    | "response:success"
+    | "fail";
+
   letter?: string;
-  dataFromServer?: string | string[];
+  dataFromServer?: any;
+}
+
+export interface toDisplayProp {
+  toDisplay: any;
 }

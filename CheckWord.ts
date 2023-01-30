@@ -4,7 +4,7 @@ export default function CheckWord(
   userGuess: string
 ): string[] | string {
   if (!AllValidWords.includes(userGuess.toLocaleLowerCase())) {
-    return "invalid word";
+    return "invalid-word";
   }
   const placeHolder = GameWord.split("");
   let results: string[] = [];

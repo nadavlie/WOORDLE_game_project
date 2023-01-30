@@ -1,15 +1,11 @@
 import axios from "axios";
+import { type } from "os";
 import React, { useEffect, useRef, useReducer, useState } from "react";
 import FullRow from "./components/FullRow";
-import reducer from "./helpers/GameLogic";
-import { isValidLetter } from "./helpers/GameLogic";
+import * as Logic from "./helpers/GameLogic";
 
 function App() {
-  const [state, dispach] = useReducer(reducer, {
-    current: 0,
-    guess: "",
-    toCheck: false,
-  });
+  const [state, dispach] = useReducer(Logic.default, Logic.initalState);
   const _WorD = useRef("");
 
   //getting a game word from server a first app mount!
@@ -30,13 +26,16 @@ function App() {
   function KeyDownHandler(event: KeyboardEvent): void {
     switch (event.key) {
       case "Backspace":
-        dispach({ type: "delete" });
+        if (state.guess.length > 0 && state.guess.length !== 5) {
+          dispach({ type: "delete" });
+          return;
+        }
         return;
       case "Escape":
         console.log("deal later with escape--->", event.key);
         return;
       default:
-        if (!isValidLetter(event.key)) {
+        if (!Logic.isValidLetter(event.key)) {
           alert("invalid letter typed mt friend!");
           return;
         } else if (state.guess.length < 4) {
@@ -52,11 +51,21 @@ function App() {
       let answer = await axios.post("http://localhost:3001/", {
         wordToCheck: state.guess,
       });
+      console.log(answer.data === "invalid-word");
       if (answer.status == 200) {
-        dispach({ dataFromServer: answer.data, type: "answer-success" });
-        return;
+        if (answer.data === "invalid-word") {
+          dispach({ type: "response:invalid-word" });
+          return;
+        } else {
+          let key = state.guess;
+          let value = answer.data;
+          let payload = { [key]: value };
+          dispach({ type: "response:success", dataFromServer: payload });
+          return;
+        }
+      } else {
+        dispach({ type: "fail" });
       }
-      dispach({ dataFromServer: answer.data, type: "answer-fail" });
     };
     if (state.toCheck) {
       callServer();
@@ -73,11 +82,21 @@ function App() {
 
   return (
     <div>
-      <FullRow />
-      <FullRow />
-      <FullRow />
-      <FullRow />
-      <FullRow />
+      <FullRow
+        toDisplay={state.styles[0] || (state.try === 0 ? state.guess : "")}
+      />
+      <FullRow
+        toDisplay={state.styles[1] || (state.try === 1 ? state.guess : "")}
+      />
+      <FullRow
+        toDisplay={state.styles[2] || (state.try === 2 ? state.guess : "")}
+      />
+      <FullRow
+        toDisplay={state.styles[3] || (state.try === 3 ? state.guess : "")}
+      />
+      <FullRow
+        toDisplay={state.styles[4] || (state.try === 4 ? state.guess : "")}
+      />
 
       <h1>zona</h1>
       <h1>{state.guess}</h1>

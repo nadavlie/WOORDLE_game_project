@@ -6,19 +6,21 @@ const reducer = (prev: Type.State, action: Type.Action): Type.State => {
     case "add":
       return { ...prev, guess: prev.guess + action.letter };
     case "delete":
-      if (prev.guess.length > 0 && prev.guess.length < 5) {
-        return { ...prev, guess: prev.guess.slice(0, -1) };
-      } else {
-        return { ...prev };
-      }
+      return { ...prev, guess: prev.guess.slice(0, -1) };
     case "addAndCheck":
       return { ...prev, guess: prev.guess + action.letter, toCheck: true };
-    case "answer-success":
-      console.log(action.dataFromServer);
-      return { ...prev, toCheck: false };
+    case "response:invalid-word":
+      return { ...prev, guess: "", toCheck: false };
+    case "response:success":
+      return {
+        toCheck: false,
+        guess: "",
+        styles: [...prev.styles, action.dataFromServer],
+        try: (prev.try as number) + 1,
+      };
+    case "fail":
+      throw new Error("somthing went wrong with the server...");
   }
-  console.log("non of the above in reducer logic");
-  return { ...prev };
 };
 export default reducer;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -28,3 +30,9 @@ export function isValidLetter(letter: string): boolean {
   return QWERTY.includes(letter.toUpperCase());
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+export const initalState = {
+  guess: "",
+  toCheck: false,
+  styles: [],
+  try: 0,
+};
