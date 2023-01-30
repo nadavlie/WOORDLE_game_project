@@ -1,4 +1,4 @@
-const WORDS = [
+const AllValidWords = [
   "which",
   "there",
   "their",
@@ -5757,4 +5757,4 @@ const WORDS = [
   "biffy",
   "pupal",
 ];
-export default WORDS;
+export default AllValidWords;

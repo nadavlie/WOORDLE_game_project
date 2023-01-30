@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const WORDS = [
+const AllValidWords = [
     "which",
     "there",
     "their",
@@ -5759,4 +5759,4 @@ const WORDS = [
     "biffy",
     "pupal",
 ];
-exports.default = WORDS;
+exports.default = AllValidWords;

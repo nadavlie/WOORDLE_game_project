@@ -3,6 +3,8 @@ import express, { Express, Request, Response } from "express";
 import path from "path";
 import cors from "cors";
 import data from "./server-data/data";
+import CheckWord from "./CheckWord";
+let GameWord = data[Math.floor(Math.random() * data.length)];
 
 dotenv.config();
 
@@ -12,17 +14,18 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/", (req: Request, res: Response) => {
-  let index = Math.floor(Math.random() * data.length);
-  console.log("inddex-->", index);
-  res.json({ chosenword: data[index] });
+  res.json({ chosenword: GameWord });
 });
 
-app.post("/checkword", (req: Request, res: Response) => {
-  let word = req.body.wordToCheck;
-  console.log("sent word:", word);
+app.post("/", (req: Request, res: Response) => {
+  console.log("back to you....!");
+  //sending to check users guess
+  const results = CheckWord(GameWord, req.body.wordToCheck);
+  res.json(results);
 });
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
   console.log(`imm fucking on air !! ${port}`);
 });
+export default GameWord;

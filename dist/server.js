@@ -7,20 +7,23 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const data_1 = __importDefault(require("./server-data/data"));
+const CheckWord_1 = __importDefault(require("./CheckWord"));
+let GameWord = data_1.default[Math.floor(Math.random() * data_1.default.length)];
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 app.get("/", (req, res) => {
-    let index = Math.floor(Math.random() * data_1.default.length);
-    console.log("inddex-->", index);
-    res.json({ chosenword: data_1.default[index] });
+    res.json({ chosenword: GameWord });
 });
-app.post("/checkword", (req, res) => {
-    let word = req.body.wordToCheck;
-    console.log("sent word:", word);
+app.post("/", (req, res) => {
+    console.log("back to you....!");
+    //sending to check users guess
+    const results = (0, CheckWord_1.default)(GameWord, req.body.wordToCheck);
+    res.json(results);
 });
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
     console.log(`imm fucking on air !! ${port}`);
 });
+exports.default = GameWord;

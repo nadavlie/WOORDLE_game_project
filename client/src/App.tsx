@@ -23,18 +23,25 @@ function App() {
 
   //KEY-PRESS HANDLER
   function KeyDownHandler(event: KeyboardEvent): void {
+    if (
+      !isValidLetter(event.key) &&
+      event.key !== "Backspace" &&
+      event.key !== "Escape"
+    ) {
+      alert("invalid letter typed mt friend!");
+      return;
+    }
     switch (event.key) {
       case "Backspace":
         dispach({ type: "delete", letter: event.key });
-        break;
+        return;
       case "Escape":
         console.log("deal later with escape--->", event.key);
-        break;
+        return;
       default:
-        isValidLetter(event.key)
+        state.guess.length < 4
           ? dispach({ type: "add", letter: event.key })
-          : alert("invalid letter!");
-        break;
+          : dispach({ type: "check", letter: event.key });
     }
   }
   //kEYBOARDlISTENER!
