@@ -20,6 +20,7 @@ const KeyBoard = (props: any): JSX.Element => {
     <KeyBoardWrapper>
       {QWERTY.map(item => (
         <Button
+          color={props.colorsMap.get(item)}
           key={item}
           letter={item}
           OnVirtualKeyPress={props.OnVirtualKeyPress}

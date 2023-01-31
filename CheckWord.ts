@@ -3,9 +3,10 @@ export default function CheckWord(
   GameWord: string,
   userGuess: string
 ): string[] | string {
-  if (!AllValidWords.includes(userGuess.toLocaleLowerCase())) {
+  if (!AllValidWords.includes(userGuess)) {
     return "invalid-word";
   }
+
   let a = GameWord;
   let b = a.split("");
   let results = [];

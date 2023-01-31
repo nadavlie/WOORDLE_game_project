@@ -14,6 +14,7 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/", (req: Request, res: Response) => {
+  console.log("----->", GameWord, req.body);
   res.json({ chosenword: GameWord });
 });
 
@@ -21,7 +22,7 @@ app.post("/", (req: Request, res: Response) => {
   console.log("back to you....!");
   console.log("req.body-->", req.body);
   //sending to check users guess
-  const results = CheckWord(GameWord, req.body.wordToCheck);
+  const results = CheckWord(GameWord, req.body.wordToCheck.toLowerCase());
   res.json(results);
 });
 

@@ -30,6 +30,7 @@ export function isValidLetter(letter: string): boolean {
   return QWERTY.includes(letter.toUpperCase());
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 export const initalState = {
   guess: "",
   toCheck: false,

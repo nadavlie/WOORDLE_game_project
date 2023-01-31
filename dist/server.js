@@ -14,13 +14,14 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 app.get("/", (req, res) => {
+    console.log("----->", GameWord, req.body);
     res.json({ chosenword: GameWord });
 });
 app.post("/", (req, res) => {
     console.log("back to you....!");
     console.log("req.body-->", req.body);
     //sending to check users guess
-    const results = (0, CheckWord_1.default)(GameWord, req.body.wordToCheck);
+    const results = (0, CheckWord_1.default)(GameWord, req.body.wordToCheck.toLowerCase());
     res.json(results);
 });
 const port = process.env.PORT || 3001;
