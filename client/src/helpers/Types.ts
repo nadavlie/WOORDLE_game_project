@@ -1,3 +1,5 @@
+import { type } from "os";
+
 export interface State {
   guess: string;
   styles: Style[];
@@ -23,5 +25,9 @@ export interface Action {
 }
 
 export interface toDisplayProp {
-  toDisplay: any;
+  active: boolean;
+  input: string | "";
+  style: Style | undefined;
 }
+
+export type PropsType = { toDisplay: toDisplayProp };

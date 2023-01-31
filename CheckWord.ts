@@ -6,15 +6,15 @@ export default function CheckWord(
   if (!AllValidWords.includes(userGuess.toLocaleLowerCase())) {
     return "invalid-word";
   }
-  const placeHolder = GameWord.split("");
-  let results: string[] = [];
-
+  let a = GameWord;
+  let b = a.split("");
+  let results = [];
   for (let w = 0; w < 5; w++) {
-    if (userGuess[w] === placeHolder[w]) {
-      placeHolder[w] = "!";
+    if (userGuess[w] === b[w]) {
+      b[w] = "!";
       results.push("green");
-    } else if (placeHolder.includes(userGuess[w])) {
-      placeHolder[GameWord.indexOf(userGuess[w])] = "!";
+    } else if (b.includes(userGuess[w])) {
+      b[a.indexOf(userGuess[w])] = "!";
       results.push("yellow");
     } else {
       results.push("gray");
