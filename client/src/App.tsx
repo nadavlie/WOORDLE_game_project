@@ -162,6 +162,10 @@ const Div = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   justify-items: center;
+  padding: 46px;
+  border: solid 10px #3498db;
+  border-radius: 20px;
+  box-shadow: 0px 0px 20px 2px #3498db;
 `;
 
 export default App;

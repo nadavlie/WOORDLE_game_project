@@ -47,10 +47,10 @@ const HelpWindow = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   width: 40%;
-  background-color: white;
+  background-color: #f1f7f8;
   padding: 6rem;
   margin-top: 20px;
-  border-radius: 5px;
+  border-radius: 8.8px;
   box-shadow: 0 3rem 5rem rgba(0, 0, 0, 0.3);
   z-index: 10;
   button {
@@ -60,7 +60,7 @@ const HelpWindow = styled.div`
     font-size: 1.8rem;
     color: #333;
     cursor: pointer;
-    border: 1px solid black;
+    border: 4px solid black;
     border-radius: 4.5px;
     background: -webkit-linear-gradient(
       top,
@@ -70,14 +70,14 @@ const HelpWindow = styled.div`
     );
   }
   h1 {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     margin-bottom: 2rem;
   }
   p {
-    font-size: 1.4rem;
+    font-size: 1.1rem;
   }
   li {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
   }
 `;
 
