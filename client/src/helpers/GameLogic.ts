@@ -1,5 +1,6 @@
 import * as Type from "./Types";
 import axios from "axios";
+import App from "../App";
 
 const reducer = (prev: Type.State, action: Type.Action): Type.State => {
   switch (action.type) {
@@ -7,16 +8,23 @@ const reducer = (prev: Type.State, action: Type.Action): Type.State => {
       return { ...prev, guess: prev.guess + action.letter };
     case "delete":
       return { ...prev, guess: prev.guess.slice(0, -1) };
-    case "addAndCheck":
-      return { ...prev, guess: prev.guess + action.letter, toCheck: true };
+    case "addBeforeCheck":
+      return { ...prev, guess: prev.guess + action.letter };
+    case "check":
+      return { ...prev, toCheck: true };
     case "response:invalid-word":
       return { ...prev, guess: "", toCheck: false };
     case "response:success":
       return {
+        ...prev,
         toCheck: false,
         guess: "",
         styles: [...prev.styles, action.dataFromServer],
         try: (prev.try as number) + 1,
+        colorsMap: MapUpdaterHelper(prev.colorsMap, [
+          ...prev.styles,
+          action.dataFromServer,
+        ]),
       };
     case "fail":
       throw new Error("somthing went wrong with the server...");
@@ -36,4 +44,24 @@ export const initalState = {
   toCheck: false,
   styles: [],
   try: 0,
+  colorsMap: new Map(),
+};
+
+const MapUpdaterHelper = (
+  lastMap: Map<string, string>,
+  lastStyles: [...Type.Style[]]
+) => {
+  let a = lastMap;
+  for (let each of lastStyles) {
+    for (let i = 0; i < 5; i++) {
+      let letter = Object.keys(each)[0][i];
+      let color = Object.values(each)[0][i];
+      if (a.get(letter) === "green") {
+        continue;
+      } else {
+        a.set(letter.toUpperCase(), color);
+      }
+    }
+  }
+  return a;
 };

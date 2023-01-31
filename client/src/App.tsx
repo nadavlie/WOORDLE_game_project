@@ -9,7 +9,9 @@ import KeyBoard from "./components/KeyBoard";
 function App() {
   const [state, dispach] = useReducer(Logic.default, Logic.initalState);
   const _WorD = useRef("");
+
   const [colorMap, setcolorMap] = useState(new Map());
+  console.log(colorMap);
 
   //getting a game word from server a first app mount!
   useEffect(() => {
@@ -42,6 +44,10 @@ function App() {
           dispach({ type: "delete" });
         }
         return;
+      case "Enter":
+        console.log("entered enter");
+        return BtnSubmitHandler();
+
       default:
         if (!Logic.isValidLetter(letter)) {
           alert("invalid letter typed mt friend!");
@@ -52,7 +58,7 @@ function App() {
         }
     }
     //if we got here -->  it means needs to check the word!
-    dispach({ letter: letter, type: "addAndCheck" });
+    dispach({ letter: letter, type: "addBeforeCheck" });
   }
 
   //HERE-->HANDELING FETCHING RESPONSE FROM SERVER AND COLOR-MAP UPDATING!
@@ -70,7 +76,10 @@ function App() {
           let key = state.guess;
           let value = answer.data;
           let payload = { [key]: value };
-          dispach({ type: "response:success", dataFromServer: payload });
+          dispach({
+            type: "response:success",
+            dataFromServer: payload,
+          });
           return;
         }
       } else {
@@ -80,19 +89,7 @@ function App() {
     if (state.toCheck) {
       callServer();
     }
-    let a = colorMap;
-    for (let each of state.styles) {
-      for (let i = 0; i < 5; i++) {
-        let letter = Object.keys(each)[0][i];
-        let color = Object.values(each)[0][i];
-        if (a.get(letter) === "green") {
-          continue;
-        } else {
-          a.set(letter.toUpperCase(), color);
-        }
-      }
-    }
-    setcolorMap(a);
+
     //ADDING MAP-COLOR FOR KEYBOARD COLORS!
     //ADDING MAP-COLOR FOR KEYBOARD COLORS!
     //ADDING MAP-COLOR FOR KEYBOARD COLORS!
@@ -105,6 +102,18 @@ function App() {
       window.removeEventListener("keydown", KeyDownHandler);
     };
   }, [state]);
+
+  //BTN SUBMITION HANDLER!
+
+  const BtnSubmitHandler = () => {
+    console.log("btn submition! length is-->", state.guess);
+    if (state.guess.length === 5) {
+      dispach({ type: "check" });
+    } else {
+      alert("please enter a 5 letter word!");
+      return;
+    }
+  };
 
   //RETURN STATMENT-->
 
@@ -147,8 +156,12 @@ function App() {
             style: state.styles[4],
           }}
         />
+        <Submit onClick={() => BtnSubmitHandler()}>Submit Word</Submit>
 
-        <KeyBoard colorsMap={colorMap} OnVirtualKeyPress={KeyDownHandler} />
+        <KeyBoard
+          colorsMap={state.colorsMap}
+          OnVirtualKeyPress={KeyDownHandler}
+        />
       </Div>
     </div>
   );
@@ -166,6 +179,56 @@ const Div = styled.div`
   border: solid 10px #3498db;
   border-radius: 20px;
   box-shadow: 0px 0px 20px 2px #3498db;
+`;
+
+const Submit = styled.button`
+  /* CSS */
+
+  background-image: linear-gradient(#42a1ec, #0070c9);
+  border: 1px solid #0077cc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  direction: ltr;
+  display: block;
+  font-family: "SF Pro Text", "SF Pro Icons", "AOS Icons", "Helvetica Neue",
+    Helvetica, Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: -0.022em;
+  line-height: 1.47059;
+  min-width: 30px;
+  overflow: visible;
+  padding: 9px 19px;
+  text-align: center;
+  vertical-align: baseline;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.1;
+  }
+
+  &:hover {
+    background-image: linear-gradient(#51a9ee, #147bcd);
+    border-color: #1482d0;
+    text-decoration: none;
+  }
+
+  &:active {
+    background-image: linear-gradient(#3d94d9, #0067b9);
+    border-color: #006dbc;
+    outline: none;
+  }
+
+  &:focus {
+    box-shadow: rgba(131, 192, 253, 0.5) 0 0 0 3px;
+    outline: none;
+  }
 `;
 
 export default App;

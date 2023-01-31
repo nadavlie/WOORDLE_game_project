@@ -15,6 +15,7 @@ const QWERTY = `QWERTYUIOPASDFGHJKLZXCVBNM`.split("").concat(["del"]);
 
 const KeyBoard = (props: any): JSX.Element => {
   // styling the Keyboard with styled extension!
+  console.log(props);
 
   return (
     <KeyBoardWrapper>

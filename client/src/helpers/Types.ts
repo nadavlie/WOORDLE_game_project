@@ -5,6 +5,7 @@ export interface State {
   styles: Style[];
   toCheck: boolean;
   try?: number;
+  colorsMap: Map<string, string>;
 }
 
 export interface Style {
@@ -15,13 +16,15 @@ export interface Action {
   type:
     | "add"
     | "delete"
-    | "addAndCheck"
+    | "addBeforeCheck"
     | "response:invalid-word"
     | "response:success"
-    | "fail";
+    | "fail"
+    | "check";
 
   letter?: string;
   dataFromServer?: any;
+  helper?: any;
 }
 
 export interface toDisplayProp {
