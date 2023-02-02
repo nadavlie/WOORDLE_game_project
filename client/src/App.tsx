@@ -95,6 +95,12 @@ function App() {
     //ADDING MAP-COLOR FOR KEYBOARD COLORS!
   });
 
+  if (state.win) {
+    setTimeout(() => {
+      alert("you WON! you little Woordlist!");
+    }, 200);
+  }
+
   //kEYBOARDlISTENER
   useEffect(() => {
     window.addEventListener("keydown", KeyDownHandler);

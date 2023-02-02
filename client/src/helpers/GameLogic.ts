@@ -15,17 +15,25 @@ const reducer = (prev: Type.State, action: Type.Action): Type.State => {
     case "response:invalid-word":
       return { ...prev, guess: "", toCheck: false };
     case "response:success":
-      return {
-        ...prev,
-        toCheck: false,
-        guess: "",
-        styles: [...prev.styles, action.dataFromServer],
-        try: (prev.try as number) + 1,
-        colorsMap: MapUpdaterHelper(prev.colorsMap, [
-          ...prev.styles,
-          action.dataFromServer,
-        ]),
-      };
+      let gamests = GameStatus((prev.try as number) + 1, action.dataFromServer);
+      switch (gamests) {
+        case "lose":
+          alert("sorry....but you Lost The Game :(");
+          return initalState;
+        default:
+          return {
+            ...prev,
+            toCheck: false,
+            guess: "",
+            styles: [...prev.styles, action.dataFromServer],
+            try: (prev.try as number) + 1,
+            colorsMap: MapUpdaterHelper(prev.colorsMap, [
+              ...prev.styles,
+              action.dataFromServer,
+            ]),
+            win: gamests === "win",
+          };
+      }
     case "fail":
       throw new Error("somthing went wrong with the server...");
   }
@@ -45,8 +53,10 @@ export const initalState = {
   styles: [],
   try: 0,
   colorsMap: new Map(),
+  win: false,
 };
 
+//UPDATES THE MAP SO THE KEYBOARD AND GAME MAIN DISPLAY CAN GET UPDATED TOGETHER!
 const MapUpdaterHelper = (
   lastMap: Map<string, string>,
   lastStyles: [...Type.Style[]]
@@ -64,4 +74,12 @@ const MapUpdaterHelper = (
     }
   }
   return a;
+};
+
+//return the statue of the game win/continue/lose
+const GameStatus = (attempt: number, guessResult: Type.Style) => {
+  let isAllGreen =
+    Object.values(guessResult)[0].filter(each => each === "green").length === 5;
+
+  return attempt < 5 ? (isAllGreen ? "win" : "continue") : "lose";
 };

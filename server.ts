@@ -4,7 +4,14 @@ import path from "path";
 import cors from "cors";
 import data from "./server-data/data";
 import CheckWord from "./CheckWord";
+
 let GameWord = data[Math.floor(Math.random() * data.length)];
+import expressSession from "express-session";
+import sessionFileStore from "session-file-store";
+import { Session } from "inspector";
+
+const session = expressSession;
+const FileStore = sessionFileStore(session);
 
 dotenv.config();
 
@@ -13,9 +20,19 @@ const app: Express = express();
 app.use(express.json());
 app.use(cors());
 
+app.use(
+  session({
+    secret: "secret-key",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
 app.get("/", (req: Request, res: Response) => {
   console.log("----->", GameWord, req.body);
-  res.json({ chosenword: GameWord });
+  const dataSentAsSessionWord = { chosenword: GameWord };
+  req.session.data = dataSentAsSessionWord;
+  res.json({ welcome: 315070243 });
 });
 
 app.post("/", (req: Request, res: Response) => {
@@ -31,3 +48,9 @@ app.listen(port, () => {
   console.log(`imm fucking on air !! ${port}`);
 });
 export default GameWord;
+
+declare module "express-session" {
+  interface SessionData {
+    data: any;
+  }
+}

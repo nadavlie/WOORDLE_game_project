@@ -6,6 +6,7 @@ export interface State {
   toCheck: boolean;
   try?: number;
   colorsMap: Map<string, string>;
+  win: boolean;
 }
 
 export interface Style {
