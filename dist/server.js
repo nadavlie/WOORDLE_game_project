@@ -22,17 +22,20 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
 }));
-app.get("/", (req, res) => {
-    console.log("----->", GameWord, req.body);
+app.use((req, res, next) => {
     const dataSentAsSessionWord = { chosenword: GameWord };
     req.session.data = dataSentAsSessionWord;
+    next();
+});
+app.get("/", (req, res) => {
     res.json({ welcome: 315070243 });
 });
 app.post("/", (req, res) => {
-    console.log("back to you....!");
-    console.log("req.body-->", req.body);
+    console.log("POST");
+    let a = req.session.data.chosenword;
+    console.log(a);
     //sending to check users guess
-    const results = (0, CheckWord_1.default)(GameWord, req.body.wordToCheck.toLowerCase());
+    const results = (0, CheckWord_1.default)(a, req.body.wordToCheck.toLowerCase());
     res.json(results);
 });
 const port = process.env.PORT || 3001;

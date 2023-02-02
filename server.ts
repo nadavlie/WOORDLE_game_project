@@ -27,19 +27,22 @@ app.use(
     saveUninitialized: true,
   })
 );
-
-app.get("/", (req: Request, res: Response) => {
-  console.log("----->", GameWord, req.body);
+app.use((req: Request, res: Response, next) => {
   const dataSentAsSessionWord = { chosenword: GameWord };
   req.session.data = dataSentAsSessionWord;
+  next();
+});
+
+app.get("/", (req: Request, res: Response) => {
   res.json({ welcome: 315070243 });
 });
 
 app.post("/", (req: Request, res: Response) => {
-  console.log("back to you....!");
-  console.log("req.body-->", req.body);
+  console.log("POST");
+  let a = req.session.data.chosenword;
+  console.log(a);
   //sending to check users guess
-  const results = CheckWord(GameWord, req.body.wordToCheck.toLowerCase());
+  const results = CheckWord(a, req.body.wordToCheck.toLowerCase());
   res.json(results);
 });
 
