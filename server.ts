@@ -49,7 +49,7 @@ app.post("/", (req: Request, res: Response) => {
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
-  console.log(`imm fucking on air !! ${port}`);
+  console.log(`imm on air !! ${port}`);
 });
 export default GameWord;
 
