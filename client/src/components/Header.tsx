@@ -83,11 +83,11 @@ const HelpWindow = styled.div`
 `;
 const LoginWindow = styled.div`
   position: absolute;
-  top: 38%;
+  top: 31.7%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 40%;
-  background-color: #f1f7f8;
+  background-color: #00bfff;
   padding: 6rem;
   margin-top: 20px;
   border-radius: 8.8px;
