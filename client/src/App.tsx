@@ -33,6 +33,12 @@ function App() {
   };
   //KEY-PRESS HANDLER FUNCTION
   function KeyDownHandler(keyStroke: any): void {
+    if (!isLoggedIn) {
+      alert("log in first!");
+      window.removeEventListener("keydown", KeyDownHandler);
+      return;
+    }
+
     let letter: any = keyStroke;
     if (keyStroke.key) {
       letter = keyStroke.key;
@@ -107,12 +113,10 @@ function App() {
 
   //kEYBOARDlISTENER
   useEffect(() => {
-    if (isLoggedIn) {
-      window.addEventListener("keydown", KeyDownHandler);
-      return () => {
-        window.removeEventListener("keydown", KeyDownHandler);
-      };
-    }
+    window.addEventListener("keydown", KeyDownHandler);
+    return () => {
+      window.removeEventListener("keydown", KeyDownHandler);
+    };
   }, [state, isLoggedIn]);
 
   //BTN SUBMITION HANDLER!

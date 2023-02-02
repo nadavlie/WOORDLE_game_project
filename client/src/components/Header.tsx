@@ -138,6 +138,7 @@ export default function Header(prop: HeadersProps) {
     } else {
       localStorage.clear();
       prop.loggedinUpdator();
+      window.location.reload();
     }
   }
   const formHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
