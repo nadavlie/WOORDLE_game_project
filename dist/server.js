@@ -33,7 +33,8 @@ app.get("/", (req, res) => {
 app.post("/", (req, res) => {
     console.log("POST");
     let a = req.session.data.chosenword;
-    console.log(a);
+    console.log("my guess-->", req.body.wordToCheck);
+    console.log("word to guess-->", a);
     //sending to check users guess
     const results = (0, CheckWord_1.default)(a, req.body.wordToCheck.toLowerCase());
     res.json(results);

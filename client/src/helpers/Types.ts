@@ -35,3 +35,7 @@ export interface toDisplayProp {
 }
 
 export type PropsType = { toDisplay: toDisplayProp };
+export type PropsformType = {
+  loginHandler: () => void;
+  SubmitionForm: (name: string) => void;
+};

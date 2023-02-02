@@ -8,10 +8,11 @@ import KeyBoard from "./components/KeyBoard";
 
 function App() {
   const [state, dispach] = useReducer(Logic.default, Logic.initalState);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const _WorD = useRef("");
 
   const [colorMap, setcolorMap] = useState(new Map());
-  console.log(colorMap);
+  console.log(isLoggedIn);
 
   //getting a game word from server a first app mount!
   useEffect(() => {
@@ -27,6 +28,9 @@ function App() {
   }, []);
   //getting a game word from server a first app mount!
 
+  const loggedinUpdator = () => {
+    setIsLoggedIn(!isLoggedIn);
+  };
   //KEY-PRESS HANDLER FUNCTION
   function KeyDownHandler(keyStroke: any): void {
     let letter: any = keyStroke;
@@ -103,11 +107,13 @@ function App() {
 
   //kEYBOARDlISTENER
   useEffect(() => {
-    window.addEventListener("keydown", KeyDownHandler);
-    return () => {
-      window.removeEventListener("keydown", KeyDownHandler);
-    };
-  }, [state]);
+    if (isLoggedIn) {
+      window.addEventListener("keydown", KeyDownHandler);
+      return () => {
+        window.removeEventListener("keydown", KeyDownHandler);
+      };
+    }
+  }, [state, isLoggedIn]);
 
   //BTN SUBMITION HANDLER!
 
@@ -125,7 +131,8 @@ function App() {
 
   return (
     <div>
-      <Header />
+      <Header loggedinUpdator={loggedinUpdator} />
+
       <Div>
         <FullRow
           toDisplay={{

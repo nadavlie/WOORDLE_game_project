@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+
 import styled from "styled-components";
 const HeaderWrapper = styled.header`
   width: 100%;
@@ -80,9 +81,44 @@ const HelpWindow = styled.div`
     font-size: 1.1rem;
   }
 `;
-
-export default function Header() {
+const LoginWindow = styled.div`
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40%;
+  background-color: #f1f7f8;
+  padding: 6rem;
+  margin-top: 20px;
+  border-radius: 8.8px;
+  box-shadow: 0 3rem 5rem rgba(0, 0, 0, 0.3);
+  z-index: 10;
+  backdropfilter: blur(8px);
+  button {
+    font-size: 0.9rem;
+    color: #333;
+    cursor: pointer;
+    border: 1px solid black;
+    border-radius: 2.5px;
+    background: -webkit-linear-gradient(
+      top,
+      #f9f9f9 0%,
+      #d2d2d2 80%,
+      #c0c0c0 100%
+    );
+  }
+`;
+interface HeadersProps {
+  loggedinUpdator: () => void;
+}
+export default function Header(prop: HeadersProps) {
   const [ClickedForHelp, SetClickedForHelp] = useState(false);
+
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  const [loginInfo, setloginInfo] = useState({
+    isLoggedIn: false,
+    loggingIn: false,
+  });
 
   function OpenHelp() {
     SetClickedForHelp(true);
@@ -94,7 +130,27 @@ export default function Header() {
   function keyboardHandlerModal(event: any) {
     if (event.key === "Escape") CloseHelp();
   }
+  function loginHandler() {
+    if (!loginInfo.isLoggedIn) {
+      setloginInfo(prev => {
+        return { ...prev, loggingIn: true };
+      });
+    } else {
+      localStorage.clear();
+      prop.loggedinUpdator();
+    }
+  }
+  const formHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    const a = inputRef.current!.value;
+    localStorage.setItem("username", a);
+    prop.loggedinUpdator();
+    setloginInfo(prev => {
+      return { isLoggedIn: true, loggingIn: false };
+    });
+  };
 
+  //adding handler for ESC button to exit!
   useEffect(() => {
     window.addEventListener("keydown", keyboardHandlerModal);
     return () => {
@@ -106,11 +162,24 @@ export default function Header() {
     <div>
       <HeaderWrapper>
         <h1>
-          <strong>Welcome To My Woordle Game!</strong>
+          <strong>
+            Hello {localStorage.getItem("username") || ""} Welcome To My Woordle
+            Game!
+          </strong>
         </h1>
         <button onClick={OpenHelp}>Help</button>
+        <button onClick={loginHandler}>
+          {loginInfo.isLoggedIn ? "Logout" : "Login"}
+        </button>
       </HeaderWrapper>
       {ClickedForHelp && <ModalPopUp CloseHelp={CloseHelp} />}
+      {loginInfo.loggingIn && (
+        <LoginWindow>
+          <label>enter user name</label>
+          <input type="text" ref={inputRef} />
+          <button onClick={formHandler}>submit</button>
+        </LoginWindow>
+      )}
     </div>
   );
 }
